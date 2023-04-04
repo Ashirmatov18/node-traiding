@@ -31,6 +31,8 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.static(path.resolve("static")));
 
 app.get("/api/get", (req, res) => {
+  console.log('get api')
+
   const sqlGet = "SELECT * FROM car_db";
   db.query(sqlGet, (error, result) => {
     res.send(result);
@@ -227,6 +229,7 @@ app.post("/api/post", (req, res) => {
   );
 });
 app.get("/", (req, res) => {
+  console.log('hi')
 });
 
 app.listen(PORT, () =>
