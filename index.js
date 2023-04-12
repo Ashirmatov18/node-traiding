@@ -28,24 +28,26 @@ const db = mysql.createPool({
   // user: "root",
   // password: "Darigul250268",
   // database: "car_data",
-  host: process.env.DB_HOST, 
-  user: process.env.DB_USERNAME, 
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DBNAME,
+  host: 'bq1h0zinxafp3kprv2jv-mysql.services.clever-cloud.com', 
+  user: 'uailzk4ct19bc7ll', 
+  password: 'VbiohKLSzo5Ev1Cw6zNJ',
+  database: 'bq1h0zinxafp3kprv2jv',
   waitForConnections: true,
-  connectionLimit: 10,
+  // connectionLimit: 10,
   queueLimit: 0
-});
+}
+);
+console.log(db.host)
+
 
 db.getConnection((err, conn) => {
   if(err) console.log(err)
-  console.log("Connected successfully")
+  console.log("Connected successfully", conn)
+  // connection.end();
 })
 
 
 export default db.promise()
-
-
 
 const PORT = process.env.PORT || 3306
 
@@ -212,13 +214,13 @@ app.post("/api/post", (req, res) => {
     equipment,
   } = req.body;
   const { image } = req.files;
-  console.log(req.files);
-
+  // console.log(req.files);
+  console.log(name, year)
   if (!image) {
     res.status(400).json({ error: "No file was uploaded" });
     return;
   }
-  console.log(image);
+  // console.log(image);
   let fileName = crypto.randomUUID() + "." + image.mimetype.split("/")[1];
 
   image.mv(path.resolve("static", fileName));
@@ -253,6 +255,8 @@ app.post("/api/post", (req, res) => {
     }
   );
 });
+
+
 app.get("/", (req, res) => {
   console.log('hi')
 });
