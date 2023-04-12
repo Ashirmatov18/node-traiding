@@ -9,6 +9,20 @@ import crypto from "crypto";
 
 const app = express();
 // const port = 8000;
+// const db = mysql.createPool({
+//   // host: "localhost",
+//   // user: "root",
+//   // password: "Darigul250268",
+//   // database: "car_data",
+//   host: process.env.DB_HOST, 
+//   user: process.env.DB_USERNAME, 
+//   password: process.env.DB_PASSWORD,
+//   database: process.env.DB_DBNAME,
+//   waitForConnections: true,
+//   connectionLimit: 10,
+//   queueLimit: 0
+// });
+
 const db = mysql.createPool({
   // host: "localhost",
   // user: "root",
@@ -22,7 +36,15 @@ const db = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0
 });
-const PORT = 3306
+
+db.getConnection((err, conn) => {
+  if(err) console.log(err)
+  console.log("Connected successfully")
+})
+
+module.exports = db.promise()
+
+const PORT = process.env.PORT || 3306
 
 app.use(cors());
 app.use(express.json());
@@ -140,7 +162,7 @@ app.delete("/api/remove/:id", (req, res) => {
 //       mileage,
 //       description,
 //       equipment,
-//     ],
+//     ],`
 //     (error, result) => {
 //       if (error) {
 //         console.log(error);
