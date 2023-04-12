@@ -42,7 +42,10 @@ db.getConnection((err, conn) => {
   console.log("Connected successfully")
 })
 
-module.exports = db.promise()
+
+export default db.promise()
+
+
 
 const PORT = process.env.PORT || 3306
 
