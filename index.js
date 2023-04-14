@@ -37,18 +37,18 @@ const db = mysql.createPool({
   queueLimit: 0
 }
 );
-console.log(db.host)
+// console.log(db.host)
 
 
 db.getConnection((err, conn) => {
   if(err) console.log(err)
-  console.log("Connected successfully", conn)
+  console.log("Connected successfully")
   // connection.end();
 })
 
 
 export default db.promise()
-
+// const mainPort = 'https://node-traiding.vercel.app'
 const PORT = process.env.PORT || 3306
 
 app.use(cors());
@@ -58,12 +58,12 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.static(path.resolve("static")));
 
 app.get("/api/get", (req, res) => {
-  console.log('get api')
-
+  
   const sqlGet = "SELECT * FROM car_db";
   db.query(sqlGet, (error, result) => {
     res.send(result);
   });
+
 });
 
 app.get("/api/get/:id", (req, res) => {
@@ -71,57 +71,59 @@ app.get("/api/get/:id", (req, res) => {
   const sqlGet = "SELECT * FROM car_db WHERE id = ?";
   db.query(sqlGet, id, (error, result) => {
     if (error) {
-      console.log(error);
+      console.log(error, id);
     }
     res.send(result);
   });
 });
 
-app.put("/api/update/:id", (req, res) => {
-  const { id } = req.params;
-  const {
-    name,
-    year,
-    color,
-    price,
-    driving,
-    image,
-    mainimage,
-    secondimage,
-    thirdimage,
-    country,
-    mileage,
-    description,
-    equipment,
-  } = req.body;
-  const sqlUpdate =
-    "UPDATE car_db SET name = ?, year = ?, color = ?, price = ?, driving = ?, image = ? WHERE id = ?,mainimage = ?, secondimage = ?, thirdimage = ?, country = ?, mileage = ?, description = ?, equipment = ?";
-  db.query(
-    sqlUpdate,
-    [
-      name,
-      year,
-      color,
-      price,
-      driving,
-      image,
-      id,
-      mainimage,
-      secondimage,
-      thirdimage,
-      country,
-      mileage,
-      description,
-      equipment,
-    ],
-    (error, result) => {
-      if (error) {
-        console.log(error);
-      }
-      res.send(result);
-    }
-  );
-});
+// app.put("/api/update/:id", (req, res) => {
+//   const { id } = req.params;
+//   const {
+//     name,
+//     year,
+//     color,
+//     price,
+//     driving,
+//     image,
+//     mainimage,
+//     secondimage,
+//     thirdimage,
+//     country,
+//     mileage,
+//     description,
+//     equipment,
+//   } = req.body;
+//   const sqlUpdate =
+//     "UPDATE car_db SET name = ?, year = ?, color = ?, price = ?, driving = ?, image = ? WHERE id = ?,mainimage = ?, secondimage = ?, thirdimage = ?, country = ?, mileage = ?, description = ?, equipment = ?";
+//   db.query(
+//     sqlUpdate,
+//     [
+//       name,
+//       year,
+//       color,
+//       price,
+//       driving,
+//       image,
+//       id,
+//       mainimage,
+//       secondimage,
+//       thirdimage,
+//       country,
+//       mileage,
+//       description,
+//       equipment,
+//     ],
+//     (error, result) => {
+//       if (error) {
+//         console.log(error);
+//       }
+//       res.send(result);
+//     }
+//   );
+// });
+
+
 
 app.delete("/api/remove/:id", (req, res) => {
   const { id } = req.params;
@@ -198,6 +200,59 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
+// app.put("/api/update/:id", (req, res) => {
+//   const { id } = req.params;
+//   const { image } = req.files;
+//   if (!image) {
+//     res.status(400).json({ error: "No file was uploaded" });
+//     return;
+//   }
+//   let fileName = crypto.randomUUID() + "." + image.mimetype.split("/")[1];
+
+//   image.mv(path.resolve("static", fileName));
+//   const {
+//     name,
+//     year,
+//     color,
+//     price,
+//     driving,
+//     mainimage,
+//     secondimage,
+//     thirdimage,
+//     country,
+//     mileage,
+//     description,
+//     equipment,
+//   } = req.body;
+//   const sqlUpdate =
+//     "UPDATE car_db SET name = ?, year = ?, color = ?, price = ?, driving = ?, image = ? WHERE id = ?,mainimage = ?, secondimage = ?, thirdimage = ?, country = ?, mileage = ?, description = ?, equipment = ?";
+//   db.query(
+//     sqlUpdate,
+//     [
+//       name,
+//       year,
+//       color,
+//       price,
+//       driving,
+//       fileName,
+//       id,
+//       mainimage,
+//       secondimage,
+//       thirdimage,
+//       country,
+//       mileage,
+//       description,
+//       equipment,
+//     ],
+//     (error, result) => {
+//       if (error) {
+//         console.log(error);
+//       }
+//       res.send(result);
+//     }
+//   );
+// });
+
 app.post("/api/post", (req, res) => {
   const {
     name,
@@ -215,7 +270,7 @@ app.post("/api/post", (req, res) => {
   } = req.body;
   const { image } = req.files;
   // console.log(req.files);
-  console.log(name, year)
+  // console.log(name, year)
   if (!image) {
     res.status(400).json({ error: "No file was uploaded" });
     return;
@@ -258,7 +313,7 @@ app.post("/api/post", (req, res) => {
 
 
 app.get("/", (req, res) => {
-  console.log('hi')
+  // console.log('hi')
 });
 
 app.listen(PORT, () =>
